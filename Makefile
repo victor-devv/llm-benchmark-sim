@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := all
 
+install:
+	@echo "Installing dependencies"
+	poetry install
+
 toml_sort:
 	toml-sort pyproject.toml --all --in-place
 
@@ -26,3 +30,33 @@ lint: toml_sort isort black flake8 mypy
 tests: test
 
 all: lint tests
+
+migrate:
+	@echo "Running migrations"
+	alembic upgrade head
+
+migrate-down:
+	@echo "Reverting latest migration"
+	alembic downgrade -1
+
+migration:
+	@echo "Creating migrations"
+ifdef MANUAL
+	# Manual migrations
+	@echo "Manual migrations"
+	alembic revision -m "$(MSG)"
+else
+	# Autogenerate migrations
+	@echo "Autogenerate migrations $(MSG)"
+	alembic revision --autogenerate -m "$(MSG)"
+endif
+
+help:
+	@echo "Available commands"
+	@echo "  make migrate    		- Run all migrations"
+	@echo "  make migration-down    - Undo the latest migration"
+	@echo "  make migration  		- Create a migration"
+	@echo "  make lint           	- Lint all files"
+	@echo "  make install           - Install packages"
+	@echo "  make tests   			- Run tests
+	@echo "  make start   			- Start app"
