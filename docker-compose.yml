@@ -1,0 +1,21 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_init:/var/lib/postgresql/data
+    environment:      
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+volumes:
+  postgres_init:
+    driver: local
