@@ -71,3 +71,7 @@ def start_worker() -> FastAPI:
     return worker
 
 app = start_worker()
+
+@app.get("/", tags=["Health Check"])
+def liveness_probe():
+    return {"status": "success", "message": "App running!"}
