@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := all
 
 NAME := ${AWS_ECR_ACCOUNT_URL}/${NAMESPACE}/${APP_NAME}
-TAG := latest-${CIRCLE_SHA1}
+TAG := latest
 REPLICA_COUNT := 1
-IMG := ${NAME}:${CIRCLE_SHA1}
+IMG := ${NAME}
 LATEST := ${NAME}:${TAG}
 HELM_ARGS := --set image.repository=${NAME},image.tag=${TAG},app.node_env=${APP_ENV},replicaCount=${REPLICA_COUNT}
 
@@ -34,12 +34,15 @@ deploy:
 	@helm repo update
 	@helm upgrade ${APP_NAME} tvl/${APP_NAME} --install --debug ${HELM_ARGS} --namespace ${APP_ENV}
 
-
 # Clean deployment resources
 .PHONY: clean
 clean: 
 	@echo "Cleaning up workspace"
 	@rm -f ./kubeconfig
+
+deploy-local:
+	@echo "Installing app in K8s cluster"
+	@helm install ${APP_NAME} ./charts  --debug ${HELM_ARGS} --namespace ${APP_ENV}
 
 install:
 	@echo "Installing dependencies"
