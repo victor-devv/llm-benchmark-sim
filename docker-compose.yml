@@ -30,7 +30,7 @@ services:
     depends_on:
       - redis
       - postgres
-      - metric_simulator
+      - randomiser_service
     command: ["uvicorn", "src.benchmark_service.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
 
   randomiser_service:
