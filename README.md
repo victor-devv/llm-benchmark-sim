@@ -5,8 +5,8 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
 - Simulates and benchmarks LLMs.
 - Exposes API endpoints to fetch benchmark results and LLM rankings.
 - Robust and scalable deployment with Kubernetes using Helm charts.
-- Integrated monitoring with Prometheus and Grafana for metrics tracking and alerts.
-
+- Seeds model records on startup
+- Retries failed operations
 
 # Installation
 ## Prerequisites
