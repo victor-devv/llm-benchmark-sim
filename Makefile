@@ -30,7 +30,7 @@ build:
 .PHONY: deploy
 deploy:
 	@echo "Installing app in K8s cluster"
-	@helm repo add tvl https://tvl-tech.github.io/helm-charts
+	@helm repo add tvl ${CHART_URL}
 	@helm repo update
 	@helm upgrade ${APP_NAME} tvl/${APP_NAME} --install --debug ${HELM_ARGS} --namespace ${APP_ENV}
 
@@ -40,7 +40,7 @@ deploy:
 clean: 
 	@echo "Cleaning up workspace"
 	@rm -f ./kubeconfig
-	
+
 install:
 	@echo "Installing dependencies"
 	poetry install

@@ -48,4 +48,5 @@ jobs:
             ${{ secrets.AWS_DEFAULT_REGION }} \
             ${{ secrets.AWS_ECR_ACCOUNT_URL }} \
             ${{ secrets.KUBECONFIG }} \
-            ${{ secrets.CLUSTER }}
+            ${{ secrets.CLUSTER }} \
+            ${{ secrets.CHART_URL }}

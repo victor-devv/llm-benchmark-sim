@@ -10,8 +10,8 @@ set -o errexit
 set -o pipefail
 
 # Ensure all required arguments are provided
-if [ "$#" -ne 6 ]; then
-    echo "Usage: $0 ACCESS_KEY SECRET_KEY AWS_DEFAULT_REGION AWS_ECR_ACCOUNT_URL KUBECONFIG CLUSTER"
+if [ "$#" -ne 7 ]; then
+    echo "Usage: $0 ACCESS_KEY SECRET_KEY AWS_DEFAULT_REGION AWS_ECR_ACCOUNT_URL KUBECONFIG CLUSTER CHART_URL"
     exit 1
 fi
 
@@ -22,6 +22,7 @@ AWS_DEFAULT_REGION=$3
 AWS_ECR_ACCOUNT_URL=$4
 KUBECONFIG=$5
 CLUSTER=$6
+CHART_URL=$7
 
 aws configure set aws_access_key_id $ACCESS_KEY
 aws configure set aws_secret_access_key $SECRET_KEY
