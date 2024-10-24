@@ -1,5 +1,5 @@
 # LLM Benchmarking Simulation
-This tool benchmarks the performance of various Language Learning Models (LLMs) against several quality metrics such as Time to First Token (TTFT), Tokens Per Second (TPS), End-to-End Latency (e2e_latency), and Requests Per Second (RPS). It consists of two services; a randomiser which simulates and stores 1000 values for each llm based on the specified metrics. Deployment is handled using helm to a kubernetes cluster.
+This tool benchmarks the performance of various Language Learning Models (LLMs) against several quality metrics such as Time to First Token (TTFT), Tokens Per Second (TPS), End-to-End Latency (e2e_latency), and Requests Per Second (RPS). It consists of two services; a randomiser which simulates and stores 1000 values for each llm based on the specified metrics. Deployment is handled using helm to a kubernetes cluster. The pipeline created natively supports deployment to an EKS cluster, using ECR as a container registry
 
 ## Features
 - Simulates and benchmarks LLMs.
@@ -19,6 +19,8 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
 - PostgreSQL 17
 - Prometheus 
 - Grafana
+- AWS EKS
+- AWS ECR
 
 ## Clone the repository
   ```bash
@@ -234,3 +236,24 @@ curl -X 'GET' \
     ]
 }
 ```
+### Kubernetes Deployment
+
+- Step 1: Install Helm
+Make sure Helm is installed. You can install it by running:
+```bash 
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+
+- Step 2: Deploy the Application
+Initialize a Kubernetes cluster if not already running (use minikube, Docker Desktop, or any cloud Kubernetes provider).
+
+##### Local Deployment:
+```bash
+make deploy-local
+```
+
+## Remote Deployment
+Whenever changes are pushed or merged to the main branch of this repository, the GitHub Actions workflow will automatically trigger build and deployment.
+Ensure all required workflow secrets are properly set up as well as the EKS cluster and ECR repository.
+The deployment will be exposed through an ingress as the service type is a ClusterIP.
+
