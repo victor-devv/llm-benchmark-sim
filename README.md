@@ -107,6 +107,95 @@ curl -X 'GET' \
   -H 'api-key: 1'
 ```
 
+### Response:
+```
+{
+    "status": "success",
+    "data": [
+        {
+            "ttft": [
+                {
+                    "llm": "Gemini 1.5Flash",
+                    "mean": 1.05
+                },
+                {
+                    "llm": "GPT-4o",
+                    "mean": 1.03
+                },
+                {
+                    "llm": "Llama 3.1 405",
+                    "mean": 1.03
+                },
+                {
+                    "llm": "Claude 3.5 Sonnet",
+                    "mean": 1.02
+                }
+            ]
+        },
+        {
+            "tps": [
+                {
+                    "llm": "GPT-4o",
+                    "mean": 82.91
+                },
+                {
+                    "llm": "Gemini 1.5Flash",
+                    "mean": 80.32
+                },
+                {
+                    "llm": "Claude 3.5 Sonnet",
+                    "mean": 78.69
+                },
+                {
+                    "llm": "Llama 3.1 405",
+                    "mean": 78.3
+                }
+            ]
+        },
+        {
+            "e2e_latency": [
+                {
+                    "llm": "Claude 3.5 Sonnet",
+                    "mean": 5.16
+                },
+                {
+                    "llm": "Llama 3.1 405",
+                    "mean": 5.16
+                },
+                {
+                    "llm": "GPT-4o",
+                    "mean": 5.05
+                },
+                {
+                    "llm": "Gemini 1.5Flash",
+                    "mean": 5.04
+                }
+            ]
+        },
+        {
+            "rps": [
+                {
+                    "llm": "GPT-4o",
+                    "mean": 50.77
+                },
+                {
+                    "llm": "Llama 3.1 405",
+                    "mean": 50.35
+                },
+                {
+                    "llm": "Claude 3.5 Sonnet",
+                    "mean": 50.12
+                },
+                {
+                    "llm": "Gemini 1.5Flash",
+                    "mean": 48.32
+                }
+            ]
+        }
+    ]
+}
+```
+
 ### Get LLM Rankings by Metric
 - GET /api/v1/benchmarks/rankings/{metric} -  Returns all LLM ranking of LLMs for a specified metric.
 
@@ -116,4 +205,29 @@ curl -X 'GET' \
   'http://localhost:8001/api/v1/benchmarks/rankings/ttft' \
   -H 'accept: application/json' \
   -H 'api-key: 1'
+```
+
+### Response:
+```
+{
+    "status": "success",
+    "data": [
+        {
+            "llm": "Gemini 1.5Flash",
+            "mean": 1.05
+        },
+        {
+            "llm": "GPT-4o",
+            "mean": 1.03
+        },
+        {
+            "llm": "Llama 3.1 405",
+            "mean": 1.03
+        },
+        {
+            "llm": "Claude 3.5 Sonnet",
+            "mean": 1.02
+        }
+    ]
+}
 ```

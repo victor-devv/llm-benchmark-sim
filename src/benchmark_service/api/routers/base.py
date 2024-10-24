@@ -2,7 +2,7 @@ from enum import Enum
 from fastapi import status
 from fastapi.routing import APIRouter
 from src.benchmark_service.config import config
-from src.benchmark_service.api.routers import benchmark, metric
+from src.benchmark_service.api.routers import benchmark, metric, llm
 
 router = APIRouter()
 
@@ -29,5 +29,6 @@ def health_check():
         }
     }
 
-router.include_router(benchmark.router, prefix="/api/v1/benchmarks", tags=["benchmarks"])
-router.include_router(metric.router, prefix="/api/v1/metrics", tags=["metrics"])
+router.include_router(benchmark.router, prefix="/api/v1/benchmarks", tags=["Benchmark Rankings"])
+router.include_router(metric.router, prefix="/api/v1/metrics", tags=["Metrics"])
+router.include_router(llm.router, prefix="/api/v1/llms", tags=["Language Learning Models"])

@@ -52,11 +52,9 @@ class BenchmarkService(BenchmarkUseCases):
             raise HTTPException(status_code=404, detail="Metric not found")
 
         benchmarks = self.benchmark_repository.get_one(metric.title)
-        res = [
+        result = [
             {"llm": benchmark[0], "mean": round(benchmark[1], 2)} for benchmark in benchmarks
         ]
-
-        result = {metric.title: res}
 
         redis_client.redis.set(
             f"{RedisKeys.METRIC_BENCHMARKS.value}:{metric_title}", json.dumps(result)

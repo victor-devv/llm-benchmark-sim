@@ -30,6 +30,6 @@ def start_application():
 
 app = start_application()
 
-@app.get("/healthz")
+@app.get("/healthz", tags=["Health Check"])
 def read_root():
     return {"status": "success", "message": "App running!"}
