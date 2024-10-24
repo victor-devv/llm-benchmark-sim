@@ -86,9 +86,9 @@ docker-compose exec api alembic upgrade head
 The Benchmark API application exposes the following endpoints:
 
 ### Get Metrics
-- GET /api/rankings/{metric} -  API endpoint that returns the ranking of LLMs for a given metric.
+- GET /api/v1/metrics -  Returns the list of metrics.
 
-#### Example request:
+#### Example:
 ```bash
 curl -X 'GET' \
   'http://localhost:8000/api/v1/metrics' \
@@ -97,9 +97,9 @@ curl -X 'GET' \
 ```
 
 ### Get All LLM Rankings
-- GET /api/v1/rankings/{metric} -  API endpoint that returns the ranking of LLMs for a given metric.
+- GET /api/v1/rankings/{metric} -  Returns all LLM rankings.
 
-#### Example request:
+#### Example:
 ```bash
 curl -X 'GET' \
   'http://localhost:8000/api/v1/benchmarks/rankings' \
@@ -108,9 +108,9 @@ curl -X 'GET' \
 ```
 
 ### Get LLM Rankings by Metric
-- GET /api/v1/benchmarks/rankings/{metric} -  API endpoint that returns the ranking of LLMs for a given metric.
+- GET /api/v1/benchmarks/rankings/{metric} -  Returns all LLM ranking of LLMs for a specified metric.
 
-#### Example request:
+#### Example:
 ```bash
 curl -X 'GET' \
   'http://localhost:8001/api/v1/benchmarks/rankings/ttft' \
