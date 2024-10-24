@@ -12,3 +12,6 @@ class LLMUseCases(ABC):
     def get_llms(self) -> dict:
         raise NotImplemented
     
+    @abstractmethod
+    def store_llm(self, name: str, creator: str) -> dict:
+        raise NotImplemented

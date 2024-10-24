@@ -53,16 +53,17 @@ class LLMInterface(ABC):
         """
         raise NotImplementedError()
 
-    # @abstractmethod
-    # def store(self, llm: LLM) -> None:
-    #     """
-    #     Save an LLM object to the repository.
+    @abstractmethod
+    def store(self, name: str, creator: str) -> None:
+        """
+        Save an LLM object to the repository.
 
-    #     Args:
-    #         llm (LLM): An LLM object to be saved.
+        Args:
+            name: str, 
+            creator: str
 
-    #     Raises:
-    #         NotImplementedError: If the method is not implemented in a subclass.
-    #     """
-    #     raise NotImplementedError()
+        Raises:
+            NotImplementedError: If the method is not implemented in a subclass.
+        """
+        raise NotImplementedError()
 

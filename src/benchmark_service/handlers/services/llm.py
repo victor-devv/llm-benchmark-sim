@@ -15,4 +15,11 @@ class LLMService(LLMUseCases):
         res = self.repository.get()
         return {"status": "success", "data": res}
 
+    def store_llm(self, name: str, creator: str):
+        """
+        Stores an llm 
+        """
+
+        res = self.repository.store(name, creator)
+        return {"status": "success", "data": res}
            

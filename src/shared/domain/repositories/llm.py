@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import Depends
+from sqlalchemy import insert
 from sqlalchemy.orm import Session
 from src.shared.domain.interfaces.llm import LLMInterface
 from src.shared.database import LLM
@@ -35,3 +36,15 @@ class LLMRepository(LLMInterface):
         """
         
         return self.db.query(LLM).filter(LLM.name == name).first()
+
+    def store(self, name: str, creator: str) -> LLM:
+        data = LLM(
+            name=name,
+            creator=creator
+        )
+
+        self.db.add(data)
+        self.db.commit()
+        self.db.refresh(data)
+
+        return data
