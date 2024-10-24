@@ -14,7 +14,7 @@ def get_all_language_learning_models(
     response = llm_service.get_llms()
     return response
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=LLMSingleResponse, description="Creates language learning models.")
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=LLMSingleResponse, description="Creates a language learning model.")
 def create(llm: CreateLlmDto, llm_service: LLMService = Depends(LLMService), api_key: str = Depends(validate_api_key),):
     try:
         response = llm_service.store_llm(

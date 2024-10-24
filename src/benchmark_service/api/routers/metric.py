@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from src.benchmark_service.handlers.services.metric import MetricService
 from src.benchmark_service.api.routers.auth import validate_api_key
-from src.shared.domain.entities.metric import MetricResponse
+from src.shared.domain.entities.metric import MetricResponse, CreateMetricDto, MetricSingleResponse
 
 router = APIRouter()
 
@@ -13,3 +13,15 @@ def get_all_metrics(
     response = metric_service.get_metrics()
     return response
 
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=MetricSingleResponse, description="Creates a quality metric using the upper and lower range values")
+def create(metric: CreateMetricDto, metric_service: MetricService = Depends(MetricService), api_key: str = Depends(validate_api_key),):
+    try:
+        response = metric_service.store_metric(
+            title=metric.title,
+            upper_bound=metric.upper_bound,
+            lower_bound=metric.lower_bound,
+        )
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="error creating metric")
+    

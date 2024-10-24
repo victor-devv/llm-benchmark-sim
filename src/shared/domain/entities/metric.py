@@ -19,3 +19,7 @@ class CreateMetricDto(BaseModel):
 class MetricResponse(BaseModel):
     status: str
     data: List[MetricEntity]
+
+class MetricSingleResponse(BaseModel):
+    status: str
+    data: MetricEntity

@@ -15,4 +15,10 @@ class MetricService(MetricUseCases):
         metrics = self.repository.get()
         return {"status": "success", "data": metrics}
 
-           
+    def store_metric(self, title: str, upper_bound: float, lower_bound: float) -> dict:
+        """
+        Stores a metric
+        """
+
+        res = self.repository.store(title, upper_bound, lower_bound)
+        return {"status": "success", "data": res}

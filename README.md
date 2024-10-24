@@ -1,5 +1,5 @@
 # LLM Benchmarking Simulation
-This tool benchmarks the performance of various Language Learning Models (LLMs) against several quality metrics such as Time to First Token (TTFT), Tokens Per Second (TPS), End-to-End Latency (e2e_latency), and Requests Per Second (RPS). It consists of two services; a randomiser which simulates and stores 1000 values for each llm based on the specified metrics. Deployment is handled using helm to a kubernetes cluster. The pipeline created natively supports deployment to an EKS cluster, using ECR as a container registry
+This tool benchmarks the performance of various Language Learning Models (LLMs) against several quality metrics such as Time to First Token (TTFT), Tokens Per Second (TPS), End-to-End Latency (e2e_latency), and Requests Per Second (RPS). It consists of two services; a randomiser which simulates and stores 1000 values for each llm based on the specified metrics. Deployment is handled using helm to a kubernetes cluster. The pipeline created natively supports deployment to an EKS cluster, using ECR as a container registry.
 
 ## Features
 - Simulates and benchmarks LLMs.
@@ -7,6 +7,7 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
 - Robust and scalable deployment with Kubernetes using Helm charts.
 - Seeds model records on startup
 - Retries failed operations
+- Create additional LLMs and metrics
 
 # Installation
 ## Prerequisites

@@ -47,3 +47,17 @@ class MetricInterface(ABC):
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
+    
+    @abstractmethod
+    def store(self, title: str, upper_bound: float, lower_bound: float) -> None:
+        """
+        Save an Metric object to the repository.
+
+        Args:
+            name: str, 
+            creator: str
+
+        Raises:
+            NotImplementedError: If the method is not implemented in a subclass.
+        """
+        raise NotImplementedError()

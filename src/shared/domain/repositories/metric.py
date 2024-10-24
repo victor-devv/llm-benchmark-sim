@@ -35,3 +35,16 @@ class MetricRepository(MetricInterface):
         """
         
         return self.db.query(Metric).filter(Metric.title == title).first()
+
+    def store(self, title: str, upper_bound: float, lower_bound: float) -> None:
+        data = Metric(
+            title=title,
+            upper_bound=upper_bound,
+            lower_bound=lower_bound
+        )
+
+        self.db.add(data)
+        self.db.commit()
+        self.db.refresh(data)
+
+        return data

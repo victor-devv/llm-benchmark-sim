@@ -11,4 +11,7 @@ class MetricUseCases(ABC):
     @abstractmethod
     def get_metrics(self) -> dict:
         raise NotImplemented
-    
+        
+    @abstractmethod
+    def store_metric(self, title: str, upper_bound: float, lower_bound: float) -> dict:
+        raise NotImplemented

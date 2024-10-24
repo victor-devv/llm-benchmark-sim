@@ -23,17 +23,17 @@ class BenchmarkService(BenchmarkUseCases):
 
         metrics = self.metric_repository.get()
         results = []
-        res = {}
 
         for metric in metrics:
             benchmarks = self.benchmark_repository.get_one(metric.title)
 
-            result = [
-                {"llm": benchmark[0], "mean": round(benchmark[1], 2)}
-                for benchmark in benchmarks
-            ]
+            if len(benchmarks) > 0:
+                result = [
+                    {"llm": benchmark[0], "mean": round(benchmark[1], 2)}
+                    for benchmark in benchmarks
+                ]
 
-            results.append(({metric.title: result}))
+                results.append(({metric.title: result}))
 
         redis_client.redis.set(RedisKeys.BENCHMARKS.value, json.dumps(results))
 
