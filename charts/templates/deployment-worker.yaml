@@ -24,7 +24,7 @@ spec:
           image: "{{ .Values.randomiserService.image.repository }}:{{ .Values.randomiserService.image.tag }}"
           imagePullPolicy: {{ .Values.randomiserService.image.pullPolicy }}
           command: ["uvicorn"]
-          args: ["src.benchmark_service.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+          args: ["src.randomiser_service.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
           ports:
             - name: workerhttp
               containerPort: {{ .Values.worker.port }}
