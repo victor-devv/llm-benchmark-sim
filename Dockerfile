@@ -9,6 +9,7 @@ ENV PATH="/root/.local/bin:$PATH"
 
 RUN pip install --no-cache-dir poetry==${POETRY_VERSION}
 
+RUN poetry lock --no-update
 RUN poetry install --no-root --no-dev
 
 COPY . .

@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY ../ /app
 
-RUN poetry install --no-root --no-dev
+RUN poetry install --no-root --no-dev --no-update
 
 EXPOSE 8000
 
