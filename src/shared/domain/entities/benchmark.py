@@ -26,8 +26,13 @@ class BenchmarkResult(BaseModel):
     llm: str
     mean: float
 
-class MetricData(RootModel):
+class MetricBenchmarkRankingResponse(BaseModel):
+    status: str
+    data: List[BenchmarkResult]
+
+class MetricDataRoot(RootModel):
     root: Dict[str, List[BenchmarkResult]]
 
-class BenchmarkResponse(RootModel):
-    root: List[MetricData]
+class BenchmarkRankingResponse(BaseModel):
+    status: str
+    data: List[MetricDataRoot]

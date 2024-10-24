@@ -19,10 +19,11 @@ class BenchmarkService(BenchmarkUseCases):
         redis_client = RedisClient()
         if redis_client.redis.exists(RedisKeys.BENCHMARKS.value):
             redis_results = json.loads(redis_client.redis.get(RedisKeys.BENCHMARKS.value))
-            return {"data": redis_results}
+            return {"status": "success", "data": redis_results}
 
         metrics = self.metric_repository.get()
         results = []
+        res = {}
 
         for metric in metrics:
             benchmarks = self.benchmark_repository.get_one(metric.title)
@@ -32,7 +33,7 @@ class BenchmarkService(BenchmarkUseCases):
                 for benchmark in benchmarks
             ]
 
-            results.append({metric.title: result})
+            results.append(({metric.title: result}))
 
         redis_client.redis.set(RedisKeys.BENCHMARKS.value, json.dumps(results))
 
@@ -45,7 +46,7 @@ class BenchmarkService(BenchmarkUseCases):
         redis_client = RedisClient()
         if redis_client.redis.exists(f"{RedisKeys.METRIC_BENCHMARKS.value}:{metric_title}"):
             redis_results = json.loads(redis_client.redis.get(f"{RedisKeys.METRIC_BENCHMARKS.value}:{metric_title}"))
-            return {"data": redis_results}
+            return {"status": "success", "data": redis_results}
 
         metric = self.metric_repository.get_one(metric_title)
         if not metric:
