@@ -51,6 +51,15 @@ else
 	alembic revision --autogenerate -m "$(MSG)"
 endif
 
+start-randomiser:
+ifdef PORT
+	@echo "Starting app on port ${PORT}..."
+	uvicorn src.randomiser_service.main:app --reload --port ${PORT}
+else
+	@echo "Starting app on port 8000..."
+	uvicorn src.randomiser_service.main:app --reload
+endif
+
 help:
 	@echo "Available commands"
 	@echo "  make migrate    		- Run all migrations"
