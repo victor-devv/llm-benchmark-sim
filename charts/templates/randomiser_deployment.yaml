@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-randomiser-service
+spec:
+  replicas: {{ .Values.randomiserService.replicaCount }}
+  selector:
+    matchLabels:
+      app: randomiser-service
+  template:
+    metadata:
+      labels:
+        app: randomiser-service
+    spec:
+      containers:
+        - name: randomiser-service
+          image: "{{ .Values.randomiserService.image.repository }}:{{ .Values.randomiserService.image.tag }}"
+          imagePullPolicy: {{ .Values.randomiserService.image.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-configmap
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
