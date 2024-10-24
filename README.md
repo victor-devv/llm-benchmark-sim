@@ -82,7 +82,10 @@ docker-compose exec api alembic upgrade head
   or `brew install helm`
 
 
-## API Endpoints
+## API 
+
+To View the Swagger UI API documentation, visit `http://localhost:8001/docs`.
+
 The Benchmark API application exposes the following endpoints:
 
 ### Get Metrics

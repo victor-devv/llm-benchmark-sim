@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-worker
+  labels:
+    app.kubernetes.io/name: {{ include "llm-benchmark.name" . }}
+    helm.sh/chart: {{ include "llm-benchmark.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "llm-benchmark.name" . }}-worker
+      app.kubernetes.io/instance: {{ .Release.Name }}-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "llm-benchmark.name" . }}-worker
+        app.kubernetes.io/instance: {{ .Release.Name }}-worker
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-worker
+          image: "{{ .Values.randomiserService.image.repository }}:{{ .Values.randomiserService.image.tag }}"
+          imagePullPolicy: {{ .Values.randomiserService.image.pullPolicy }}
+          ports:
+            - name: workerhttp
+              containerPort: {{ .Values.worker.port }}
+              protocol: TCP
+          env:
+            - name: SERVICE_NAME
+              value: {{ .Chart.Name }}
+            - name: APP_PORT
+              value: {{ .Values.app.app_port | quote }}
+            {{- range $env := .Values.app.env }}
+            - name: {{ $env | upper }}
+              valueFrom:
+                secretKeyRef:
+                  name: llm-benchmark
+                  key: {{ $env }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+          resources:
+            {{- toYaml .Values.app.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
