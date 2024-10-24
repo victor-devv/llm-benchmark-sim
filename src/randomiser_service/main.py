@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.shared.utils.logger import logging
+from src.shared.utils.logger import logging as logger
 from src.shared.database import Base
 from src.shared.domain import LLMRepository, MetricRepository, BenchmarkRepository
 from src.randomiser_service.database.seed import seed_data
@@ -22,6 +22,7 @@ main_loop = asyncio.get_event_loop()
 async def lifespan(app: FastAPI):
     db = next(get_db())
     await seed_data(db)
+    logger.info('📦  Models seeded!');
 
     llm_repo = LLMRepository(db)
     metric_repo = MetricRepository(db)
@@ -29,7 +30,7 @@ async def lifespan(app: FastAPI):
     benchmark_service = BenchmarkService(benchmark_repo, llm_repo, metric_repo)
 
     async def run_simulator():
-        """Run the simulation task with retry logic."""
+        """Run the simulator/randomiser and retry upon failure"""
         await benchmark_service.initiate_simulation()
 
     def simulate_benchmarks():
@@ -53,8 +54,8 @@ async def lifespan(app: FastAPI):
     scheduler.shutdown()
     simulator_thread.join(timeout=10)
     if simulator_thread.is_alive():
-        logging.info("Warning: Benchmark simulator thread running!")
-    logging.info("Scheduler shutdown complete")
+        logger.warning("Warning: Benchmark simulator thread running!")
+    logger.info("Scheduler shutdown complete")
 
 def start_worker() -> FastAPI:
     worker = FastAPI(
@@ -64,6 +65,8 @@ def start_worker() -> FastAPI:
     )
 
     Base.metadata.create_all(bind=engine)
+
+    logger.info(f"🚀 {config.APP_NAME} running in {config.APP_ENV}. Listening on {config.PORT}")
 
     return worker
 

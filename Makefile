@@ -53,11 +53,20 @@ endif
 
 start-randomiser:
 ifdef PORT
-	@echo "Starting app on port ${PORT}..."
+	@echo "Starting randomiser on port ${PORT}..."
 	uvicorn src.randomiser_service.main:app --reload --port ${PORT}
 else
-	@echo "Starting app on port 8000..."
+	@echo "Starting randomiser on default port 8000"
 	uvicorn src.randomiser_service.main:app --reload
+endif
+
+start-api:
+ifdef PORT
+	@echo "Starting api on port ${PORT}..."
+	uvicorn src.benchmark_service.main:app --reload --port ${PORT}
+else
+	@echo "Starting api on port 8001"
+	uvicorn src.benchmark_service.main:app --reload --port 8001
 endif
 
 help:
@@ -68,4 +77,5 @@ help:
 	@echo "  make lint           	- Lint all files"
 	@echo "  make install           - Install packages"
 	@echo "  make tests   			- Run tests
-	@echo "  make start   			- Start app"
+	@echo "  make start-randomiser  - Start randomiser service"
+	@echo "  make start-api  		- Start api service"
