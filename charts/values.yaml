@@ -8,6 +8,21 @@ image:
 app:
   port: 80
 
+  env:
+    - app_name
+    - app_debug
+    - postgres_host
+    - postgres_port
+    - postgres_user
+    - postgres_password
+    - postgres_db
+    - redis_host
+    - redis_port
+    - api_key
+    - schedule_interval
+    - seed
+    - dashboard_password
+
   resources:
     limits:
       cpu: 100m

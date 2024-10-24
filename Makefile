@@ -1,5 +1,46 @@
 .DEFAULT_GOAL := all
 
+NAME := ${AWS_ECR_ACCOUNT_URL}/${NAMESPACE}/${APP_NAME}
+TAG := latest-${CIRCLE_SHA1}
+REPLICA_COUNT := 1
+IMG := ${NAME}:${CIRCLE_SHA1}
+LATEST := ${NAME}:${TAG}
+HELM_ARGS := --set image.repository=${NAME},image.tag=${TAG},app.node_env=${APP_ENV},replicaCount=${REPLICA_COUNT}
+
+# Push built image to ECR
+.PHONY: push
+push: build
+	@echo "Pushing image"
+	@echo ""
+	@docker push ${LATEST}
+
+# Login to ECR
+.PHONY: login
+login:
+	docker login -u AWS -p ${PASS} ${AWS_ECR_ACCOUNT_URL}
+
+# Build and tag image
+.PHONY: build
+build:
+	@echo "Building and tagging image"
+	@docker build -t ${IMG} .
+	@docker tag ${IMG} ${LATEST}
+
+# Deploy to k8s cluster via helm
+.PHONY: deploy
+deploy:
+	@echo "Installing app in K8s cluster"
+	@helm repo add tvl https://tvl-tech.github.io/helm-charts
+	@helm repo update
+	@helm upgrade ${APP_NAME} tvl/${APP_NAME} --install --debug ${HELM_ARGS} --namespace ${APP_ENV}
+
+
+# Clean deployment resources
+.PHONY: clean
+clean: 
+	@echo "Cleaning up workspace"
+	@rm -f ./kubeconfig
+	
 install:
 	@echo "Installing dependencies"
 	poetry install
