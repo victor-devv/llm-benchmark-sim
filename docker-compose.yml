@@ -25,13 +25,14 @@ services:
     environment:
       - POSTGRES_HOST=postgres
       - REDIS_HOST=redis
+      - APP_PORT=8000
     volumes:
       - ./:/app
     depends_on:
       - redis
       - postgres
       - randomiser_service
-    command: ["poetry", "run", "uvicorn", "src.benchmark_service.main:app", "--port", "8001", "--reload"]
+    command: ["poetry", "run", "uvicorn", "src.benchmark_service.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   randomiser_service:
     build: .
@@ -45,7 +46,7 @@ services:
     depends_on:
       - redis
       - postgres
-    command: ["poetry", "run", "uvicorn", "src.randomiser_service.main:app", "--port", "8000", "--reload"]
+    command: ["poetry", "run", "uvicorn", "src.randomiser_service.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   grafana:
     image: grafana/grafana

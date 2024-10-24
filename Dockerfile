@@ -5,7 +5,8 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 
 ENV POETRY_VERSION=1.8.4
-ENV PATH="/root/.local/bin:$PATH"
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 RUN pip install --no-cache-dir poetry==${POETRY_VERSION}
 
