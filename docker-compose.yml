@@ -16,6 +16,39 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
 
+  benchmark_service:
+    build:
+      context: .
+      dockerfile: ./src/benchmark_service/Dockerfile
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - postgres
+      - metric_simulator
+
+  randomiser_service:
+    build:
+      context: .
+      dockerfile: ./src/randomiser_service/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - postgres
+      
 volumes:
   postgres_init:
     driver: local
