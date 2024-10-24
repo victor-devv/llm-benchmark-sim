@@ -35,7 +35,8 @@ class BenchmarkService(BenchmarkUseCases):
 
                 results.append(({metric.title: result}))
 
-        redis_client.redis.set(RedisKeys.BENCHMARKS.value, json.dumps(results))
+        if len(results) > 0:
+            redis_client.redis.set(RedisKeys.BENCHMARKS.value, json.dumps(results))
 
         return {"status": "success", "data": results}
 
@@ -53,13 +54,15 @@ class BenchmarkService(BenchmarkUseCases):
             raise HTTPException(status_code=404, detail="Metric not found")
 
         benchmarks = self.benchmark_repository.get_one(metric.title)
-        result = [
-            {"llm": benchmark[0], "mean": round(benchmark[1], 2)} for benchmark in benchmarks
-        ]
 
-        redis_client.redis.set(
-            f"{RedisKeys.METRIC_BENCHMARKS.value}:{metric_title}", json.dumps(result)
-        )
+        if len(benchmarks) > 0:
+            result = [
+                {"llm": benchmark[0], "mean": round(benchmark[1], 2)} for benchmark in benchmarks
+            ]
+
+            redis_client.redis.set(f"{RedisKeys.METRIC_BENCHMARKS.value}:{metric_title}", json.dumps(result))
+        else:
+            result = []
 
         return {"status": "success", "data": result}
            
