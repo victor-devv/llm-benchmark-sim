@@ -64,7 +64,7 @@ pylint:
 	poetry run pylint src
 
 mypy:
-	poetry run mypy --install-types --non-interactive .
+	poetry run mypy --install-types --non-interactive src
 
 test:
 	poetry run pytest
