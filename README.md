@@ -62,10 +62,18 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
 
 ### Using Docker Compose
 1. Set up your `.env` file with the necessary environment variables
+```
+cp .env.example .env
+```
 
 2. In the root of the project directory, run:
 ```bash
 docker-compose up --build -d
+```
+
+To run in one command (if .env doesn't exist):
+```
+cp .env.example .env && docker-compose up --build -d
 ```
 
 3. Migrations should run automatically. In case you need to run commands once inside the container, you can run migrations (for example) using:
@@ -86,14 +94,89 @@ docker-compose exec randomiser_service alembic upgrade head
    ```
    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
    ```
-  or `brew install helm`
-
 
 ## API 
 
 To View the Swagger UI API documentation, visit `http://localhost:8001/docs`.
 
 The Benchmark API application exposes the following endpoints:
+
+### Get LLMs
+- GET /api/v1/llms -  Returns the list of LLMs.
+
+#### Example:
+```bash
+curl -X 'GET' \
+  'http://localhost:8001/api/v1/llms' \
+  -H 'accept: application/json' \
+  -H 'api-key: 1'
+```
+
+### Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": "50fc245a-0f2b-4086-8c61-672f125f48e4",
+            "created_at": "2024-10-24T10:53:28.282048Z",
+            "name": "GPT-4o",
+            "creator": "OpenAI",
+            "updated_at": null
+        },
+        {
+            "id": "7d8788fb-c91e-450d-ad08-dd291de9918d",
+            "created_at": "2024-10-24T10:53:28.282048Z",
+            "name": "Llama 3.1 405",
+            "creator": "Meta",
+            "updated_at": null
+        },
+        {
+            "id": "bdb8a134-16cf-4054-bc44-32ad304d98db",
+            "created_at": "2024-10-24T10:53:28.282048Z",
+            "name": "Claude 3.5 Sonnet",
+            "creator": "Anthropic",
+            "updated_at": null
+        },
+        {
+            "id": "e7a8a618-8bb5-4e2c-b7c7-20448e8e3e85",
+            "created_at": "2024-10-24T10:53:28.282048Z",
+            "name": "Gemini 1.5Flash",
+            "creator": "Google",
+            "updated_at": null
+        }
+    ]
+}
+```
+
+### Create LLM
+- POST /api/v1/llms - Adds a new LLM.
+
+#### Example:
+```bash
+curl -X POST \
+  'http://localhost:8001/api/v1/llms' \
+  -H 'accept: application/json' \
+  -H 'api-key: 1' \
+  -d '{
+    "name": "Mixtral 8x22B",
+    "creator": "Mistral AI"
+    }'
+```
+
+### Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "id": "1936720d-6153-4e37-8df2-ae28008ed06f",
+        "created_at": "2024-10-24T22:06:00.526653Z",
+        "name": "Mixtral 8x22B",
+        "creator": "Mistral AI",
+        "updated_at": null
+    }
+}
+```
 
 ### Get Metrics
 - GET /api/v1/metrics -  Returns the list of metrics.
@@ -104,6 +187,78 @@ curl -X 'GET' \
   'http://localhost:8001/api/v1/metrics' \
   -H 'accept: application/json' \
   -H 'api-key: 1'
+```
+
+### Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": "b60262b8-3983-46ef-b282-adbe1aa88c6d",
+            "created_at": "2024-10-24T11:01:57.624538+00:00",
+            "title": "ttft",
+            "upper_bound": 2,
+            "lower_bound": 0.05,
+            "updated_at": null
+        },
+        {
+            "id": "642f0b9f-b76f-4d09-9e4d-3c25bb874a30",
+            "created_at": "2024-10-24T11:01:57.624538+00:00",
+            "title": "tps",
+            "upper_bound": 150,
+            "lower_bound": 10,
+            "updated_at": null
+        },
+        {
+            "id": "7e258821-00bb-4d27-9756-a9ee62027044",
+            "created_at": "2024-10-24T11:01:57.624538+00:00",
+            "title": "e2e_latency",
+            "upper_bound": 10,
+            "lower_bound": 0.2,
+            "updated_at": null
+        },
+        {
+            "id": "f205e206-8b4e-4d68-a113-e5288d11647a",
+            "created_at": "2024-10-24T11:01:57.624538+00:00",
+            "title": "rps",
+            "upper_bound": 100,
+            "lower_bound": 1,
+            "updated_at": null
+        }
+    ]
+}
+```
+
+### Create Metric
+- POST /api/v1/metrics - Adds a new Metric.
+
+#### Example:
+```bash
+curl -X POST \
+  'http://localhost:8001/api/v1/metrics' \
+  -H 'accept: application/json' \
+  -H 'api-key: 1' \
+  -d '{
+    "title": "gpqa",
+    "upper_bound": 100.0,
+    "lower_bound": 0.0
+    }'
+```
+
+### Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "id": "c3400ef8-3146-4b88-b6ac-21797591cde1",
+        "created_at": "2024-10-24T22:18:38.999586Z",
+        "title": "gpqa",
+        "upper_bound": 100.0,
+        "lower_bound": 0.0,
+        "updated_at": null
+    }
+}
 ```
 
 ### Get All LLM Rankings
@@ -118,7 +273,7 @@ curl -X 'GET' \
 ```
 
 ### Response:
-```
+```json
 {
     "status": "success",
     "data": [
@@ -218,7 +373,7 @@ curl -X 'GET' \
 ```
 
 ### Response:
-```
+```json
 {
     "status": "success",
     "data": [
