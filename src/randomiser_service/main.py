@@ -1,28 +1,31 @@
-import os
 import asyncio
+import os
+from contextlib import asynccontextmanager
 from threading import Thread
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.shared.utils.logger import logging as logger
-from src.shared.database import Base
-from src.shared.domain import LLMRepository, MetricRepository, BenchmarkRepository
-from src.randomiser_service.database.seed import seed_data
-from src.shared.database.session import engine, get_db
-from src.randomiser_service.handlers.services.benchmark import BenchmarkService
+
 from src.randomiser_service.config import config
+from src.randomiser_service.database.seed import seed_data
+from src.randomiser_service.handlers.services.benchmark import BenchmarkService
+from src.shared.database import Base
+from src.shared.database.session import engine, get_db
+from src.shared.domain import BenchmarkRepository, LLMRepository, MetricRepository
+from src.shared.utils.logger import logging as logger
 
 load_dotenv()
 SCHEDULE_INTERVAL = int(os.getenv("SCHEDULE_INTERVAL", "3"))
 scheduler = AsyncIOScheduler()
 main_loop = asyncio.get_event_loop()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db = next(get_db())
     await seed_data(db)
-    logger.info('📦  Models seeded!');
+    logger.info("📦  Models seeded!")
 
     llm_repo = LLMRepository(db)
     metric_repo = MetricRepository(db)
@@ -57,6 +60,7 @@ async def lifespan(app: FastAPI):
         logger.warning("Warning: Benchmark simulator thread running!")
     logger.info("Scheduler shutdown complete")
 
+
 def start_worker() -> FastAPI:
     worker = FastAPI(
         title=config.APP_NAME,
@@ -66,11 +70,15 @@ def start_worker() -> FastAPI:
 
     Base.metadata.create_all(bind=engine)
 
-    logger.info(f"🚀 {config.APP_NAME} running in {config.APP_ENV}. Listening on {config.PORT}")
+    logger.info(
+        f"🚀 {config.APP_NAME} running in {config.APP_ENV}. Listening on {config.PORT}"
+    )
 
     return worker
 
+
 app = start_worker()
+
 
 @app.get("/", tags=["Health Check"])
 def liveness_probe():

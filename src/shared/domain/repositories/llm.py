@@ -1,10 +1,12 @@
 from typing import List
+
 from fastapi import Depends
-from sqlalchemy import insert
 from sqlalchemy.orm import Session
-from src.shared.domain.interfaces.llm import LLMInterface
+
 from src.shared.database import LLM
 from src.shared.database.session import get_db
+from src.shared.domain.interfaces.llm import LLMInterface
+
 
 class LLMRepository(LLMInterface):
     def __init__(self, db: Session = Depends(get_db)):
@@ -16,7 +18,6 @@ class LLMRepository(LLMInterface):
         """
         self.db = db
 
-    
     def get(self) -> List[LLM]:
         """
         Fetch a list of LLM objects from the repository.
@@ -34,14 +35,11 @@ class LLMRepository(LLMInterface):
         Returns:
             LLM: An LLM object retrieved from the repository.
         """
-        
+
         return self.db.query(LLM).filter(LLM.name == name).first()
 
     def store(self, name: str, creator: str) -> LLM:
-        data = LLM(
-            name=name,
-            creator=creator
-        )
+        data = LLM(name=name, creator=creator)
 
         self.db.add(data)
         self.db.commit()

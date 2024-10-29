@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
+
 from src.shared.domain import Metric
+
 
 class MetricInterface(ABC):
     """
@@ -34,7 +36,7 @@ class MetricInterface(ABC):
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
-    
+
     @abstractmethod
     def get_one(self, title: str) -> Metric | None:
         """
@@ -47,14 +49,14 @@ class MetricInterface(ABC):
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
-    
+
     @abstractmethod
     def store(self, title: str, upper_bound: float, lower_bound: float) -> None:
         """
         Save an Metric object to the repository.
 
         Args:
-            name: str, 
+            name: str,
             creator: str
 
         Raises:

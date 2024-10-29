@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 from uuid import UUID
+
 from src.shared.domain.entities.benchmark import BenchmarkEntity
+
 
 class BenchmarkInterface(ABC):
     """
@@ -41,7 +43,7 @@ class BenchmarkInterface(ABC):
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
-    
+
     @abstractmethod
     def get_one(self, metric_name: str) -> Optional[List[tuple]]:
         """
@@ -58,11 +60,9 @@ class BenchmarkInterface(ABC):
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
-    
+
     @abstractmethod
-    def store(
-        self, llm_id: UUID, metric_id: UUID, benchmarks: List[float]
-    ) -> int:
+    def store(self, llm_id: UUID, metric_id: UUID, benchmarks: List[float]) -> int:
         """
         Stores benchmarks to the database.
 
@@ -73,7 +73,7 @@ class BenchmarkInterface(ABC):
 
         Returns:
             int: The number of benchmarks added.
-        
+
         Raises:
             NotImplementedError: If the method is not implemented in a subclass.
         """

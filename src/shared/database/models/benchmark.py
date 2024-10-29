@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Float, ForeignKey, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+
 from src.shared.database.models.base import Base
+
 
 class Benchmark(Base):
     __tablename__ = "benchmarks"

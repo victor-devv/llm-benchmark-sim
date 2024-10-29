@@ -1,7 +1,9 @@
-from pydantic import BaseModel
+from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
-from datetime import datetime
+
+from pydantic import BaseModel
+
 
 class MetricEntity(BaseModel):
     id: UUID
@@ -10,15 +12,18 @@ class MetricEntity(BaseModel):
     upper_bound: float
     lower_bound: float
     updated_at: Optional[datetime]
-        
+
+
 class CreateMetricDto(BaseModel):
     title: str
     upper_bound: float
     lower_bound: float
 
+
 class MetricResponse(BaseModel):
     status: str
     data: List[MetricEntity]
+
 
 class MetricSingleResponse(BaseModel):
     status: str

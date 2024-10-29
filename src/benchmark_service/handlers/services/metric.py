@@ -1,6 +1,7 @@
-from src.shared.domain.repositories.metric import MetricRepository
-from src.benchmark_service.handlers.use_cases.metric import MetricUseCases
 from fastapi import Depends
+
+from src.benchmark_service.handlers.use_cases.metric import MetricUseCases
+from src.shared.domain.repositories.metric import MetricRepository
 
 
 class MetricService(MetricUseCases):
@@ -9,7 +10,7 @@ class MetricService(MetricUseCases):
 
     def get_metrics(self):
         """
-        Retrieves all metrics 
+        Retrieves all metrics
         """
 
         metrics = self.repository.get()

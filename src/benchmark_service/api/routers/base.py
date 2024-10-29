@@ -1,8 +1,10 @@
 from enum import Enum
+
 from fastapi import status
 from fastapi.routing import APIRouter
+
+from src.benchmark_service.api.routers import benchmark, llm, metric
 from src.benchmark_service.config import config
-from src.benchmark_service.api.routers import benchmark, metric, llm
 
 router = APIRouter()
 
@@ -12,6 +14,7 @@ class StatusEnum(str, Enum):
     FAILURE = "failed"
     ERROR = "error"
     UNKNOWN = "unknown"
+
 
 @router.get(
     "/status",
@@ -26,9 +29,14 @@ def health_check():
         "data": {
             "title": config.APP_NAME,
             "version": config.APP_VERSION,
-        }
+        },
     }
 
-router.include_router(benchmark.router, prefix="/api/v1/benchmarks", tags=["Benchmark Rankings"])
+
+router.include_router(
+    benchmark.router, prefix="/api/v1/benchmarks", tags=["Benchmark Rankings"]
+)
 router.include_router(metric.router, prefix="/api/v1/metrics", tags=["Metrics"])
-router.include_router(llm.router, prefix="/api/v1/llms", tags=["Language Learning Models"])
+router.include_router(
+    llm.router, prefix="/api/v1/llms", tags=["Language Learning Models"]
+)

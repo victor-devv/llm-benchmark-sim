@@ -1,6 +1,7 @@
-from src.shared.domain.repositories.llm import LLMRepository
-from src.benchmark_service.handlers.use_cases.llm import LLMUseCases
 from fastapi import Depends
+
+from src.benchmark_service.handlers.use_cases.llm import LLMUseCases
+from src.shared.domain.repositories.llm import LLMRepository
 
 
 class LLMService(LLMUseCases):
@@ -9,7 +10,7 @@ class LLMService(LLMUseCases):
 
     def get_llms(self):
         """
-        Retrieves all llms 
+        Retrieves all llms
         """
 
         res = self.repository.get()
@@ -17,9 +18,8 @@ class LLMService(LLMUseCases):
 
     def store_llm(self, name: str, creator: str):
         """
-        Stores an llm 
+        Stores an llm
         """
 
         res = self.repository.store(name, creator)
         return {"status": "success", "data": res}
-           

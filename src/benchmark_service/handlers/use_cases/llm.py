@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.shared.domain.interfaces.llm import LLMInterface as LLMRepository
 
 
@@ -10,8 +11,8 @@ class LLMUseCases(ABC):
 
     @abstractmethod
     def get_llms(self) -> dict:
-        raise NotImplemented
-    
+        raise NotImplementedError
+
     @abstractmethod
     def store_llm(self, name: str, creator: str) -> dict:
-        raise NotImplemented
+        raise NotImplementedError

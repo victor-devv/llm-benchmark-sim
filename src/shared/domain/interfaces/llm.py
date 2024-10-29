@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
+
 from src.shared.domain import LLM
+
 
 class LLMInterface(ABC):
     """
@@ -59,11 +61,10 @@ class LLMInterface(ABC):
         Save an LLM object to the repository.
 
         Args:
-            name: str, 
+            name: str,
             creator: str
 
         Raises:
             NotImplementedError: If the method is not implemented in a subclass.
         """
         raise NotImplementedError()
-

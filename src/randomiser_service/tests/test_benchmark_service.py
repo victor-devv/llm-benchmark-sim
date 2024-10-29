@@ -1,6 +1,12 @@
-import pytest
 from unittest.mock import AsyncMock, Mock, patch
-from src.randomiser_service.handlers.services.benchmark import MAX_RETRIES, RETRY_DELAY, BenchmarkService
+
+import pytest
+
+from src.randomiser_service.handlers.services.benchmark import (
+    MAX_RETRIES,
+    RETRY_DELAY,
+    BenchmarkService,
+)
 
 
 @pytest.fixture
@@ -19,16 +25,21 @@ def mock_benchmark_repository():
 
 
 @pytest.fixture
-def benchmark_service(mock_llm_repository, mock_metric_repository, mock_benchmark_repository):
+def benchmark_service(
+    mock_llm_repository, mock_metric_repository, mock_benchmark_repository
+):
     return BenchmarkService(
         llm_repository=mock_llm_repository,
         metric_repository=mock_metric_repository,
         benchmark_repository=mock_benchmark_repository,
     )
 
+
 @pytest.fixture
 def mock_redis_client():
-    with patch("src.randomiser_service.handlers.services.benchmark.RedisClient") as mock:
+    with patch(
+        "src.randomiser_service.handlers.services.benchmark.RedisClient"
+    ) as mock:
         yield mock.return_value
 
 
@@ -48,9 +59,7 @@ async def test_generate_benchmark_data(benchmark_service):
 
 
 @pytest.mark.asyncio
-async def test_initiate_simulation_success(
-    benchmark_service, mock_redis_client
-):
+async def test_initiate_simulation_success(benchmark_service, mock_redis_client):
     mock_lock = AsyncMock()
     mock_redis_client.redis.lock.return_value.__enter__.return_value = mock_lock
 

@@ -1,16 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.benchmark_service.config import config
+
 from src.benchmark_service.api.routers.base import router
+from src.benchmark_service.config import config
 from src.shared.utils.logger import logging as logger
+
 
 def register_routers(app):
     app.include_router(router)
 
+
 def start_application():
-    app = FastAPI(
-        title=config.APP_NAME, version=config.APP_VERSION
-    )
+    app = FastAPI(title=config.APP_NAME, version=config.APP_VERSION)
 
     origins = ["*"]
 
@@ -21,18 +22,22 @@ def start_application():
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    
+
     register_routers(app)
 
-    logger.info(f"🚀 {config.APP_NAME} running in {config.APP_ENV}. Listening on {config.PORT}")
+    logger.info(
+        f"🚀 {config.APP_NAME} running in {config.APP_ENV}. Listening on {config.PORT}"
+    )
     return app
 
 
 app = start_application()
 
+
 @app.get("/", tags=["Health Check"])
 def liveness_probe():
     return {"status": "success", "message": "App running!"}
+
 
 @app.get("/healthz", tags=["Health Check"])
 def read_root():

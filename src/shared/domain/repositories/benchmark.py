@@ -1,11 +1,14 @@
 from typing import List, Optional
 from uuid import UUID
+
 from fastapi import Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import func, insert
-from src.shared.domain.interfaces.benchmark import BenchmarkInterface
-from src.shared.database import Benchmark, LLM, Metric
+from sqlalchemy.orm import Session
+
+from src.shared.database import LLM, Benchmark, Metric
 from src.shared.database.session import get_db
+from src.shared.domain.interfaces.benchmark import BenchmarkInterface
+
 
 class BenchmarkRepository(BenchmarkInterface):
     def __init__(self, db: Session = Depends(get_db)):
@@ -16,7 +19,7 @@ class BenchmarkRepository(BenchmarkInterface):
             db (Session, optional): _description_. Defaults to Depends(get_db).
         """
         self.db = db
-    
+
     def get(self) -> List[Benchmark]:
         """
         Fetch a list of Benchmark objects from the repository.
@@ -38,7 +41,7 @@ class BenchmarkRepository(BenchmarkInterface):
             Optional[List[tuple]]: A list of tuples containing the LLM name and mean metric value,
             or None if no results found.
         """
-        
+
         query = (
             self.db.query(
                 LLM.name.label("llm_name"),
@@ -91,5 +94,5 @@ class BenchmarkRepository(BenchmarkInterface):
             self.db.query(Benchmark).delete(synchronize_session=False)
             self.db.commit()
             return True
-        except Exception as e:
+        except Exception:
             return False

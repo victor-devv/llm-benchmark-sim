@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.shared.domain.interfaces.metric import MetricInterface as MetricRepository
 
 
@@ -10,8 +11,8 @@ class MetricUseCases(ABC):
 
     @abstractmethod
     def get_metrics(self) -> dict:
-        raise NotImplemented
-        
+        raise NotImplementedError
+
     @abstractmethod
     def store_metric(self, title: str, upper_bound: float, lower_bound: float) -> dict:
-        raise NotImplemented
+        raise NotImplementedError

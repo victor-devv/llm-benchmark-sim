@@ -1,5 +1,6 @@
 import hashlib
 import os
+
 import numpy as np
 from dotenv import load_dotenv
 
@@ -7,7 +8,10 @@ load_dotenv()
 
 SEED_VALUE = os.getenv("SEED", "")
 
-def generate_data_points(min: float, max: float, llm_name: str, metric: str, size: int = 1000) -> list:
+
+def generate_data_points(
+    min: float, max: float, llm_name: str, metric: str, size: int = 1000
+) -> list:
     """
     Generates a list of random data points within a specified range.
 

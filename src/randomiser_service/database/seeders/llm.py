@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
+
 from src.shared.database.models.llm import LLM
 from src.shared.utils.logger import logging
+
 
 async def populate_llms(db: Session) -> None:
     if db.query(LLM).count() > 0:
