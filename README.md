@@ -45,7 +45,7 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
    `make install`
 <br>
 
-3. Set up your `.env` file with the necessary environment variables:
+3. Set up your `.env` file with the necessary environment variables
 
 4. Run database migrations:
    `make migrate`
@@ -61,17 +61,21 @@ This tool benchmarks the performance of various Language Learning Models (LLMs) 
 
 
 ### Using Docker Compose
-In the root of the project directory, run:
+1. Set up your `.env` file with the necessary environment variables
+
+2. In the root of the project directory, run:
 ```bash
 docker-compose up --build -d
 ```
-- Once inside the container, you can run Alembic migrations 
+
+3. Migrations should run automatically. In case you need to run commands once inside the container, you can run migrations (for example) using:
 ```bash
-  alembic upgrade head
+alembic upgrade head
 ```
-- or run this command:
+
+or outside the container using:
 ```bash
-docker-compose exec api alembic upgrade head
+docker-compose exec randomiser_service alembic upgrade head
 ```
 
 ## Kubernetes Deployment
@@ -97,7 +101,7 @@ The Benchmark API application exposes the following endpoints:
 #### Example:
 ```bash
 curl -X 'GET' \
-  'http://localhost:8000/api/v1/metrics' \
+  'http://localhost:8001/api/v1/metrics' \
   -H 'accept: application/json' \
   -H 'api-key: 1'
 ```
@@ -108,7 +112,7 @@ curl -X 'GET' \
 #### Example:
 ```bash
 curl -X 'GET' \
-  'http://localhost:8000/api/v1/benchmarks/rankings' \
+  'http://localhost:8001/api/v1/benchmarks/rankings' \
   -H 'accept: application/json' \
   -H 'api-key: 1'
 ```
